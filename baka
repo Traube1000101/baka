@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+read -r -d '' help <<-EOM
+	▄▄      ▄
+	█▄▀ ▄▀█ █▄▀ ▄▀█
+	█▄▀ █▀█ █ █ █▀█
+
+	A Tool to backup files or directories with the suffix baka
+    
+	Usage: baka <filename> [option]
+
+	Options:
+	    -y            Skip confirmation
+	    -h, --help    Show this help
+EOM
+
+warning_size=1073741824 # Change this to set the limit for confirmations (default: 1GiB)
+
+option=$2
+
+# Check size of file or directory and ask for confirmation if over $warning_size
+function check_size() {
+    # Get size of file or directory
+    local size
+    if [[ -d $1 ]]; then
+        size=$(du -sb "$1" 2>/dev/null | awk '{print $1}')
+    elif [[ -f $1 ]]; then
+        size=$(stat -c %s "$1")
+    else
+        echo "File not found: $1"
+        exit 1
+    fi
+
+    # Ask for confirmation if size is over $warning_size
+    if ((size > warning_size)) && [[ ! ($option == "-f" || $option == "--force" || $option == "-y") ]]; then
+        local size_string
+        size_string=$(numfmt --to=iec-i --format='%.2fB' "$size")
+        local file_count
+        file_count=$(find "$1" -type f | wc -l)
+        local text
+        if [[ -d $1 ]]; then
+            text="Are you sure you want to backup this directory?\n\"$1\"\n$file_count files [$size_string]"
+        else
+            text="Are you sure you want to backup this file?\n\"$1\"\n[$size_string]"
+        fi
+        if dialog --title baka --keep-tite --no-lines --yesno "$text" 7 54; then
+            return 0 # Yes
+        else
+            return 1 # No
+        fi
+    fi
+}
+
+if [[ -z $1 || $1 == "-h" || $1 == "--help" ]]; then
+    echo "$help"
+else
+    filename=$1
+    if check_size "$filename"; then
+        if [[ -d $filename ]]; then
+            cp -RT "$filename" "$(dirname "$filename")/$(basename "$filename").baka"
+        else
+            cp "$filename" "$filename.baka"
+        fi
+    fi
+fi
