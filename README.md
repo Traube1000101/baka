@@ -3,24 +3,28 @@
 █▄▀ █▀█ █  █ █▀█
 
 
-## Features
+# Features
 - Creating backup of files and directories with the suffix baka
 - Confirmation if the file or directory is larger than 1GiB
 
-## Manual installation
+# Install
+## If you have Arch, install via AUR 
+[AUR Package](https://aur.archlinux.org/packages/baka)
 
-### Dependencies
+## Manual install
+
+#### 1.&ensp;Install Dependencies
 - make
 - dialog
 
-### Download latest release
+#### 2.&ensp;[Download latest release](../../releases/latest)
 
-### Unpack and change directory
+#### 3.&ensp;Unpack and change directory
 ```
 tar -xvzf baka-?.?.?.tar.gz
 cd baka-?.?.?
 ```
-### Install
+#### 4.&ensp;Install
 ```
 make install
 ```
