@@ -9,7 +9,7 @@
 
 # Install
 ## If you have Arch, install via AUR 
-[AUR Package](https://aur.archlinux.org/packages/baka)
+#### [AUR Package](https://aur.archlinux.org/packages/baka)
 
 ## Manual install
 
