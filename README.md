@@ -21,8 +21,8 @@
 
 #### 3.&ensp;Unpack and change directory
 ```
-tar -xvzf baka-?.?.?.tar.gz
-cd baka-?.?.?
+tar -xvzf baka-*.tar.gz
+cd baka-*
 ```
 #### 4.&ensp;Install
 ```
